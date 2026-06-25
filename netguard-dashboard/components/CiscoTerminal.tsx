@@ -20,7 +20,7 @@ export function CiscoTerminal({ target, onExecute, busy }: { target?: Device; on
   const targetIp = target?.ip;
 
   useEffect(() => {
-    
+    // Clear and start typing animation whenever target changes
     setTerminalLines([]);
     if (!targetIp) return;
 
@@ -55,7 +55,7 @@ export function CiscoTerminal({ target, onExecute, busy }: { target?: Device; on
       }
     };
 
-    interval = setInterval(typeChar, 30); 
+    interval = setInterval(typeChar, 30); // 30ms per character typing rate
     return () => clearInterval(interval);
   }, [targetIp]);
 

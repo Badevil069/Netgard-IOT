@@ -12,14 +12,14 @@ type ChartRow = {
 };
 
 function getLineColor(status: Device["status"], index: number): string {
-  if (status === "ROGUE") return "#ff4444"; 
-  if (status === "QUARANTINED") return "#a855f7"; 
-  const normalColors = ["#00ff88", "#00d4ff", "#38bdf8"]; 
+  if (status === "ROGUE") return "#ff4444"; // red rogue
+  if (status === "QUARANTINED") return "#a855f7"; // purple quarantine
+  const normalColors = ["#00ff88", "#00d4ff", "#38bdf8"]; // green, cyan, blue
   return normalColors[index % normalColors.length];
 }
 
 export function TrafficGraph({ devices, history }: { devices: Device[]; history: TrafficHistory }) {
-  
+  // Sort devices to prioritize showing active/risk devices in the graph
   const visibleDevices = [...devices]
     .sort((a, b) => {
       const priority = { ROGUE: 0, QUARANTINED: 1, NORMAL: 2 };
@@ -29,7 +29,7 @@ export function TrafficGraph({ devices, history }: { devices: Device[]; history:
 
   const maxLength = Math.max(0, ...Object.values(history).map((series) => series.length));
   
-  
+  // Format history into rows for Recharts LineChart
   const rows: ChartRow[] = Array.from({ length: maxLength }).map((_, index) => {
     const firstSeries = Object.values(history)[0] ?? [];
     const timestamp = firstSeries[index]?.timestamp ?? new Date().toISOString();

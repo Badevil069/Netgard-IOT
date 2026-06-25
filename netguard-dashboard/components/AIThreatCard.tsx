@@ -29,7 +29,7 @@ export function AIThreatCard({ device, onQuarantine, busy }: { device: Device; o
     };
   }, [device.ip]);
 
-  
+  // Construct evidence list based on thresholds
   const evidence: string[] = [];
   if (device.unique_ports > 50) {
     evidence.push(`Port scan: ${device.unique_ports} unique ports (threshold: 50)`);
@@ -63,7 +63,7 @@ export function AIThreatCard({ device, onQuarantine, busy }: { device: Device; o
         </span>
       </CardHeader>
       <CardContent className="space-y-4 pt-4">
-        {}
+        {/* Evidence Checklist */}
         <div className="space-y-2">
           <p className="text-[10px] uppercase tracking-[0.14em] text-text-secondary font-bold">Detection Evidence</p>
           <ul className="space-y-1.5 pl-1">
@@ -80,12 +80,12 @@ export function AIThreatCard({ device, onQuarantine, busy }: { device: Device; o
           </ul>
         </div>
 
-        {}
+        {/* Confidence Formula */}
         <div className="rounded border border-red/20 bg-black/40 px-3 py-2 font-mono text-xs text-cyan">
           confidence = anomaly score + rule override + evidence weight = {device.confidence.toFixed(1)}%
         </div>
 
-        {}
+        {/* LLaMA Explanation */}
         <div className="space-y-2">
           <p className="text-[10px] uppercase tracking-[0.14em] text-text-secondary font-bold">LLaMA 3 Threat Explanation</p>
           <div className="rounded-md border border-border bg-[#0a0e1a]/80 p-4 text-xs font-mono leading-6 text-text-secondary min-h-[90px] max-h-[220px] overflow-y-auto scrollbar-thin">
@@ -99,7 +99,7 @@ export function AIThreatCard({ device, onQuarantine, busy }: { device: Device; o
           </div>
         </div>
 
-        {}
+        {/* Action Buttons */}
         <div className="flex flex-wrap gap-2 pt-2">
           <Button 
             className="border-red bg-red/10 text-red hover:bg-red/20 font-bold" 

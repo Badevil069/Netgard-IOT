@@ -33,7 +33,7 @@ export default function DashboardPage() {
   const [reportedIncidentIps, setReportedIncidentIps] = useState<string[]>([]);
   const [activeIncident, setActiveIncident] = useState<IncidentReport | null>(null);
 
-  
+  // Poll for incidents from the backend
   useEffect(() => {
     let mounted = true;
     const fetchIncidents = async () => {
@@ -54,7 +54,7 @@ export default function DashboardPage() {
     };
   }, []);
 
-  
+  // Auto-generate incident reports when a new rogue device is discovered
   useEffect(() => {
     const rogueDevice = devices.find((device) => device.status === "ROGUE");
     if (rogueDevice && !reportedIncidentIps.includes(rogueDevice.ip)) {
@@ -72,19 +72,19 @@ export default function DashboardPage() {
         timestamp: new Date().toISOString(),
       };
 
-      
+      // Add to state list and local tracking to prevent infinite logs
       setReportedIncidentIps((prev) => [...prev, rogueDevice.ip]);
       
       const saveIncident = async () => {
         try {
           await postIncident(newIncident);
-          
+          // Set as active banner notification
           setActiveIncident({
             ...newIncident,
             raw: "",
             path: `${incidentId}.txt`,
           });
-          
+          // Refresh list
           const res = await getIncidents();
           setIncidents(res.incidents);
         } catch (err) {
@@ -96,7 +96,7 @@ export default function DashboardPage() {
     }
   }, [devices, reportedIncidentIps]);
 
-  
+  // Compute stats dynamically
   const stats: SummaryStats = useMemo(() => {
     const rogue = devices.filter((device) => device.status === "ROGUE").length;
     const quarantined = devices.filter((device) => device.status === "QUARANTINED" || device.quarantined).length;
@@ -116,7 +116,7 @@ export default function DashboardPage() {
   const rogueDevices = devices.filter((device) => device.status === "ROGUE");
   const primaryTarget = rogueDevices[0] ?? devices.find((device) => device.status === "QUARANTINED");
 
-  
+  // Construct events timeline list
   const events: TimelineEvent[] = useMemo(() => {
     const deviceEvents = devices.map((device) => {
       let type: "device" | "warning" | "rogue" | "quarantine" | "contained" = "device";
@@ -174,12 +174,12 @@ export default function DashboardPage() {
 
   return (
     <div className="dashboard-shell min-h-screen bg-bg text-text-primary pb-10">
-      {}
+      {/* ROW 1: Header */}
       <Header stats={stats} />
 
       <div className="grid-overlay">
         <main className="mx-auto w-full max-w-[1800px] space-y-5 px-4 py-4 md:px-6">
-          {}
+          {/* Incident Notification Banner (Shows only when activeIncident exists) */}
           {activeIncident && (
             <div className="animate-pulseBorder rounded-lg border border-red bg-red/10 p-4 text-red flex flex-col md:flex-row items-center justify-between gap-4 shadow-rogue">
               <div className="flex items-center gap-3">
@@ -205,7 +205,7 @@ export default function DashboardPage() {
             </div>
           )}
 
-          {}
+          {/* ROW 2: Metric Cards (Exactly 4 Columns) */}
           <ErrorBoundary>
             <section className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
               <MetricCard 
@@ -240,10 +240,10 @@ export default function DashboardPage() {
             </section>
           </ErrorBoundary>
 
-          {}
+          {/* ROW 3: Alert Banner (shows only when ROGUE detected) */}
           <ThreatAlert devices={devices} />
 
-          {}
+          {/* ROW 4: Device Table (60%) & Network Topology SVG (40%) */}
           <section className="grid gap-4 lg:grid-cols-5">
             <div className="lg:col-span-3">
               <ErrorBoundary>
@@ -262,12 +262,12 @@ export default function DashboardPage() {
             </div>
           </section>
 
-          {}
+          {/* ROW 5: Real-Time Traffic Graph (full width) */}
           <ErrorBoundary>
             <TrafficGraph devices={devices} history={history} />
           </ErrorBoundary>
 
-          {}
+          {/* ROW 6: Packet Feed (60%) & Event Timeline (40%) */}
           <section className="grid gap-4 lg:grid-cols-5">
             <div className="lg:col-span-3">
               <ErrorBoundary>
@@ -281,7 +281,7 @@ export default function DashboardPage() {
             </div>
           </section>
 
-          {}
+          {/* ROW 7: AI Threat Intelligence */}
           {rogueDevices.length > 0 && (
             <section className="grid gap-4">
               {rogueDevices.map((device) => (
@@ -296,7 +296,7 @@ export default function DashboardPage() {
             </section>
           )}
 
-          {}
+          {/* ROW 8: Cisco IOS Terminal */}
           <ErrorBoundary>
             <CiscoTerminal 
               target={primaryTarget} 
@@ -305,7 +305,7 @@ export default function DashboardPage() {
             />
           </ErrorBoundary>
 
-          {}
+          {/* ROW 9: Quarantine Audit Log */}
           <ErrorBoundary>
             <QuarantineLog actions={actions} />
           </ErrorBoundary>

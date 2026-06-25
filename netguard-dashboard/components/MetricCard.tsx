@@ -22,7 +22,7 @@ const toneClasses = {
   purple: "border-purple/50 text-purple",
 };
 
-
+// Cast animated.span as any to resolve strict TS compiler mismatch between React 18 and react-spring web typings
 const AnimatedSpan = animated.span as any;
 
 function AnimatedNumber({ value }: { value: number | string }) {

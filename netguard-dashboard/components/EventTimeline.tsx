@@ -12,7 +12,7 @@ const eventStyles = {
 };
 
 export function EventTimeline({ events }: { events: TimelineEvent[] }) {
-  const displayEvents = events.slice(0, 10); 
+  const displayEvents = events.slice(0, 10); // Show last 10 events, newest at top
 
   return (
     <Card className="border border-border">

@@ -27,7 +27,7 @@ export function NetworkTopology({ devices }: { devices: Device[] }) {
       const priority = { ROGUE: 0, QUARANTINED: 1, NORMAL: 2 };
       return priority[a.status] - priority[b.status] || b.unique_ports - a.unique_ports;
     })
-    .slice(0, 10); 
+    .slice(0, 10); // Limit to 10 for clean spacing
   const hiddenCount = Math.max(0, devices.length - visibleDevices.length);
   
   const center = { x: 225, y: 140 };
@@ -104,7 +104,7 @@ export function NetworkTopology({ devices }: { devices: Device[] }) {
             }
           `}</style>
 
-          {}
+          {/* Connection Lines */}
           {positioned.map(({ device, x, y }) => {
             const lineClass =
               device.status === "ROGUE"
@@ -124,7 +124,7 @@ export function NetworkTopology({ devices }: { devices: Device[] }) {
             );
           })}
 
-          {}
+          {/* Core Switch */}
           <circle cx={center.x} cy={center.y} r="32" fill="#111827" stroke="#00d4ff" strokeWidth="2" />
           <foreignObject x={center.x - 14} y={center.y - 20} width="28" height="28">
             <div className="grid h-7 w-7 place-items-center text-cyan">
@@ -135,14 +135,14 @@ export function NetworkTopology({ devices }: { devices: Device[] }) {
             SWITCH
           </text>
 
-          {}
+          {/* Nodes */}
           {positioned.map(({ device, x, y }) => {
             const Icon = iconFor(device);
             const color = colorFor(device.status);
             const isRogue = device.status === "ROGUE";
             return (
               <g key={device.ip}>
-                {}
+                {/* Rogue outer pulse ring */}
                 {isRogue && (
                   <circle
                     cx={x}
@@ -153,7 +153,7 @@ export function NetworkTopology({ devices }: { devices: Device[] }) {
                     className="pulse-ring"
                   />
                 )}
-                {}
+                {/* Main Node Circle */}
                 <circle
                   cx={x}
                   cy={y}
@@ -169,7 +169,7 @@ export function NetworkTopology({ devices }: { devices: Device[] }) {
                   </div>
                 </foreignObject>
                 
-                {}
+                {/* Node labels (IP and status) */}
                 <text x={x} y={y + 26} textAnchor="middle" fill="#cbd5e1" fontSize="7.5" fontFamily="monospace" className="font-bold">
                   {device.ip}
                 </text>
@@ -181,7 +181,7 @@ export function NetworkTopology({ devices }: { devices: Device[] }) {
           })}
         </svg>
 
-        {}
+        {/* Live List Underneath */}
         <div className="grid max-h-[140px] gap-2 overflow-y-auto pr-1 scrollbar-thin sm:grid-cols-2">
           {visibleDevices.map((device) => (
             <div key={device.ip} className="flex items-center justify-between gap-2 rounded-md border border-white/5 bg-bg/55 px-2.5 py-1.5">
