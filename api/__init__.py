@@ -1,1 +1,0 @@
-"""NetGuard FastAPI backend package."""
