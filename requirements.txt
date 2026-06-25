@@ -1,0 +1,12 @@
+scapy
+pandas
+scikit-learn
+streamlit
+netmiko
+paramiko
+ollama
+requests
+numpy
+python-dotenv
+fastapi
+uvicorn
